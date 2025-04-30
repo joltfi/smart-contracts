@@ -1,5 +1,6 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 import { OPTIMISM_MAINNET } from "../../constant.ts";
+import { keccak256, toUtf8Bytes } from "ethers";
 
 module.exports = buildModule(
   "DeployLendingPoolAddressesProviderModule",
@@ -10,6 +11,11 @@ module.exports = buildModule(
       "LendingPoolAddressesProvider",
       [marketId]
     );
+
+    m.call(lendingPoolAddressesProvider, "setAddress", [
+      keccak256(toUtf8Bytes("TEAM_WALLET")),
+      OPTIMISM_MAINNET.MULTISIG,
+    ]);
 
     m.call(lendingPoolAddressesProvider, "setPoolAdmin", [
       OPTIMISM_MAINNET.DEPLOYER,

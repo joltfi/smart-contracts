@@ -50,6 +50,8 @@ contract AToken is
     address internal _treasury;
     IAaveIncentivesController internal _incentivesController;
 
+    bytes32 public constant TEAM_WALLET = keccak256("TEAM_WALLET");
+
     modifier onlyLendingPool() {
         require(
             _msgSender() == address(_pool),
@@ -219,8 +221,8 @@ contract AToken is
         if (amount == 0) {
             return;
         }
-
-        address wallet = _pool.getAddressesProvider().getPoolAdmin();
+        
+        address wallet = _pool.getAddressesProvider().getAddress(TEAM_WALLET);
         _mint(wallet, amount.rayDiv(index));
 
         emit Transfer(address(0), wallet, amount);
