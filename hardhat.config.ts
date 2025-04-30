@@ -4,6 +4,7 @@ import "@nomicfoundation/hardhat-ethers";
 import "@nomicfoundation/hardhat-chai-matchers";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomicfoundation/hardhat-verify";
+import "@nomicfoundation/hardhat-ledger";
 
 require("dotenv").config();
 
@@ -55,7 +56,12 @@ const config: HardhatUserConfig = {
     },
     op_mainnet: {
       url: process.env.ALCHEMY_OP_MAINNET!,
-      accounts: [process.env.PRIVATE_KEY!],
+      ledgerAccounts: [
+        // This is an example address
+        // Be sure to replace it with an address from your own Ledger device
+        "0x3300ed582aadab0d80e6b04fbc00e35f50c6336d",
+      ],
+      chainId: 10,
     },
     hardhat: {
       mining: {
