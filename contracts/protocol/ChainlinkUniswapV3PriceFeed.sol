@@ -7,8 +7,10 @@ import "../dependencies/openzeppelin/contracts/Ownable.sol";
 import "../dependencies/openzeppelin/contracts/IERC20Detailed.sol";
 import "../interfaces/IPriceFeed.sol";
 import "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 interface IChainlinkAggregator {
+
     function decimals() external view returns (uint8);
 
     function latestRoundData()
@@ -24,6 +26,8 @@ interface IChainlinkAggregator {
 }
 
 contract ChainlinkUniswapV3PriceFeed is Ownable, IPriceFeed {
+    using SafeMath for uint256;
+    
     address public immutable chainlinkFeed;
     address public immutable uniswapPool;
     address public immutable token0;
@@ -36,12 +40,10 @@ contract ChainlinkUniswapV3PriceFeed is Ownable, IPriceFeed {
     // TWAP observation window (in seconds)
     uint32 public twapWindow;
 
-    uint32 public chainlinkTimeout = 60 * 30; // 30 minutes
-
-    uint32 private constant MIN_TWAP_WINDOW = 60 * 30; // 30 minutes
-
-    uint32 private constant MIN_CHAINLINK_TIMEOUT = 60 * 15; // 15 minutes
-    uint32 private constant MAX_CHAINLINK_TIMEOUT = 60 * 60 * 24; // 24 hours
+    uint32 public chainlinkTimeout = 1800; // 30 minutes
+    uint32 private constant MIN_TWAP_WINDOW = 1800; // 30 minutes
+    uint32 private constant MIN_CHAINLINK_TIMEOUT = 900; // 15 minutes
+    uint32 private constant MAX_CHAINLINK_TIMEOUT = 86400; // 24 hours
 
     enum Source {
         CHAINLINK,
@@ -139,10 +141,11 @@ contract ChainlinkUniswapV3PriceFeed is Ownable, IPriceFeed {
         ) {
             if (answer <= 0) return (0, false);
 
-            price = uint256(answer) * 10 ** (18 - chainlinkDecimals);
+            price = uint256(answer).mul(10 ** uint256(18).sub(uint256(chainlinkDecimals)));
+
             if (
                 answer <= 0 ||
-                block.timestamp - updatedAt > chainlinkTimeout ||
+                block.timestamp.sub(updatedAt) > chainlinkTimeout ||
                 answeredInRound < roundId
             ) {
                 return (price, false);
@@ -167,7 +170,9 @@ contract ChainlinkUniswapV3PriceFeed is Ownable, IPriceFeed {
                 token0,
                 token1
             );
-            price = quoteAmount * (10 ** (18 - token1Decimals));
+            
+            price = quoteAmount.mul(10 ** uint256(18).sub(uint256(token1Decimals)));
+
         } else {
             uint256 quoteAmount = OracleLibrary.getQuoteAtTick(
                 tick,
@@ -175,7 +180,9 @@ contract ChainlinkUniswapV3PriceFeed is Ownable, IPriceFeed {
                 token1,
                 token0
             );
-            price = quoteAmount * (10 ** (18 - token0Decimals));
+            
+            price = quoteAmount.mul(10 ** uint256(18).sub(uint256(token0Decimals)));
+
         }
     }
 
