@@ -3,9 +3,7 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-
-import "hardhat/console.sol";
-
+ 
 interface IWETH {
     function deposit() external payable;
 
@@ -63,24 +61,19 @@ contract ConstructorBorrow {
         // Convert ETH to WETH
         weth.deposit{value: msg.value}();
 
-        console.log("convert eth to wth ok");
         // Approve lending pool to use the WETH
         require(
             weth.approve(address(lendingPool), msg.value),
             "WETH approval failed"
         );
 
-        console.log("deposit");
         // Deposit WETH into the lending pool on behalf of the deployer
         lendingPool.deposit(WETH, msg.value, address(this), 0);
         emit Deposited(msg.sender, msg.value);
 
-        console.log("deposit ok");
-        console.log("borrowing");
         // Borrow the specified token from the lending pool on behalf of the deployer
         // Using interest rate mode 2 (variable rate); adjust if needed.
         lendingPool.borrow(borrowToken, borrowAmount, 2, 0, address(this));
         emit Borrowed(msg.sender, borrowToken, borrowAmount);
-        console.log("borrow ok");
     }
 }

@@ -5,8 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "../dependencies/openzeppelin/contracts/ReentrancyGuard.sol";
 import "../dependencies/openzeppelin/contracts/AccessControl.sol";
-
-import "hardhat/console.sol";
+ 
 
 interface ISwapRouter {
     struct ExactInputSingleParams {
@@ -151,7 +150,6 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
         require(params.userToLiquidate != address(0), "Invalid target");
         require(params.slippage <= 500, "Slippage too high"); // 5% max slippage
 
-        console.log("borrowing");
         // Borrow from lending pool
         ILendingPool(params.lendingPool).borrow(
             params.borrowAsset,
@@ -163,7 +161,6 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
 
         // Swap borrow asset for debt asset if necessary
         if (params.borrowAsset != params.debtAsset) {
-            console.log("swapping");
             _swap(
                 params.uniswapQuoter,
                 params.uniswapRouter,
@@ -174,7 +171,6 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
             );
         }
 
-        console.log("liquidating");
         // Liquidate
         _liquidationCall(
             params.lendingPool,
@@ -183,14 +179,11 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
             params.userToLiquidate
         );
 
-        console.log("checking collateralBalance");
         uint256 collateralBalance = IERC20(params.collateralAsset).balanceOf(
             address(this)
         );
-        console.log(collateralBalance);
-
+        
         if (params.collateralAsset != params.borrowAsset) {
-            console.log("swapping for debt");
             // Swap collateral for debt
             _swap(
                 params.uniswapQuoter,
@@ -202,18 +195,15 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
             );
         }
 
-        console.log("checking borrowBalance");
         uint256 borrowBalance = IERC20(params.borrowAsset).balanceOf(
             address(this)
         );
-        console.log(borrowBalance);
 
         require(
             borrowBalance >= params.debtToCover,
             "Insufficient repayment amount"
         );
 
-        console.log("repaying debt");
         // Repay the borrowed asset
         _repay(
             params.lendingPool,
@@ -222,14 +212,11 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
             params.assetProvider
         );
 
-        console.log("checking leftover profit");
         uint256 liquidationProfit = IERC20(params.borrowAsset).balanceOf(
             address(this)
         );
-        console.log(liquidationProfit);
 
         if (liquidationProfit > 0) {
-            console.log("depositing profit");
             _deposit(
                 params.lendingPool,
                 params.borrowAsset,
@@ -238,7 +225,6 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
             );
         }
 
-        console.log("emitting event");
         emit LiquidationExecuted(
             params.userToLiquidate,
             params.collateralAsset,
@@ -253,10 +239,8 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
         uint256 amount,
         address assetProvider
     ) internal {
-        console.log("_deposit increaseAllowance");
         IERC20(asset).safeIncreaseAllowance(_lendingPool, amount);
         // repay debt
-        console.log("_deposit deposit");
         ILendingPool(_lendingPool).deposit(asset, amount, assetProvider, 0);
     }
 
@@ -266,10 +250,8 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
         uint256 amount,
         address user
     ) internal {
-        console.log("_repay increaseAllowance");
         IERC20(asset).safeIncreaseAllowance(_lendingPool, amount);
         // repay debt
-        console.log("_repay repay");
         ILendingPool(_lendingPool).repay(asset, amount, 2, user);
     }
 
@@ -281,15 +263,12 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
         uint256 amountIn,
         uint256 slippage
     ) internal {
-        console.log("_swap");
         uint256 amountOutMin = _calculateMinAmountOut(
             _uniswapQuoter,
             path,
             amountIn,
             slippage
         );
-        console.log("_swap amountOutMin");
-        console.log(amountOutMin);
         _swapTokensV3(_uniswapRouter, tokenIn, path, amountIn, amountOutMin);
     }
 
@@ -299,14 +278,11 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
         uint256 amountIn,
         uint256 slippage
     ) internal returns (uint256) {
-        console.log("_calculateMinAmountOut");
         // The quoter will simulate the swap along the provided path.
         uint256 amountOut = IQuoter(_uniswapQuoter).quoteExactInput(
             path,
             amountIn
         );
-        console.log("_calculateMinAmountOut amountOut");
-        console.log(amountOut);
         // Apply slippage (where slippage is expressed in basis points)
         return (amountOut * (10000 - slippage)) / 10000;
     }
@@ -318,13 +294,9 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
         uint256 amountIn,
         uint256 amountOutMin
     ) internal returns (uint256 amountOut) {
-        console.log("_swapTokensV3");
         // Increase allowance for the router to spend tokenIn.
         IERC20(tokenIn).safeIncreaseAllowance(_uniswapRouter, amountIn);
 
-        console.log("_swapTokensV3 params");
-        console.log(amountIn);
-        console.log(amountOutMin);
         // Set up the parameters for the multi-hop swap via the precomputed path.
         ISwapRouter.ExactInputParams memory params = ISwapRouter
             .ExactInputParams({
@@ -335,7 +307,6 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
                 amountOutMinimum: amountOutMin
             });
 
-        console.log("_swapTokensV3 exactInput");
         // Perform the swap. This call handles both single-hop and multi-hop swaps.
         amountOut = ISwapRouter(_uniswapRouter).exactInput(params);
     }
@@ -346,15 +317,12 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
         address debtAsset,
         address userToLiquidate
     ) internal {
-        console.log("_liquidationCall balance");
         // debt balance
         uint256 debtBalance = IERC20(debtAsset).balanceOf(address(this));
 
-        console.log("_liquidationCall allowance");
         // approve
         IERC20(debtAsset).safeIncreaseAllowance(_lendingPool, debtBalance);
 
-        console.log("_liquidationCall liquidate");
         // liquidate
         ILendingPool(_lendingPool).liquidationCall(
             collateralAsset,
@@ -363,7 +331,6 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
             debtBalance,
             false
         );
-        console.log("_liquidationCall ret");
     }
 
     // Role management functions

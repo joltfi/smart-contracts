@@ -9,8 +9,7 @@ pragma solidity ^0.8.0;
 /// @author Joshua Levine <joshua@makerdao.com>
 /// @author Nick Johnson <arachnid@notdot.net>
 /// @author Andreas Bigger <andreas@nascent.xyz>
-/// @author Matt Solomon <matt@mattsolomon.dev>
-import "hardhat/console.sol";
+/// @author Matt Solomon <matt@mattsolomon.dev> 
 
 contract Multicall3 {
     struct Call {
@@ -197,16 +196,11 @@ contract Multicall3 {
             // ~ 10^25 Wei in existence << ~ 10^76 size uint fits in a uint256
             unchecked {
                 valAccumulator += val;
-            }
-            console.log(val);
-            console.log(length);
-            console.log(calli.target);
+            }            
 
             (result.success, result.returnData) = calli.target.call{value: val}(
                 calli.callData
             );
-
-            console.log(result.success);
 
             assembly {
                 // Revert if the call fails and failure is not allowed

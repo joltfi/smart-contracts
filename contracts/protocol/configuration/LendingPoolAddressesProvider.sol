@@ -15,8 +15,7 @@ import {ILendingPoolAddressesProvider} from "../../interfaces/ILendingPoolAddres
  * - Acting also as factory of proxies and admin of those, so with right to change its implementations
  * - Owned by the Aave Governance
  * @author Aave
- **/
-import "hardhat/console.sol";
+ **/ 
 
 contract LendingPoolAddressesProvider is
     Ownable,
