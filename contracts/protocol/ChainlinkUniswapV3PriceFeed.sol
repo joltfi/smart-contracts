@@ -7,7 +7,7 @@ import "../dependencies/openzeppelin/contracts/Ownable.sol";
 import "../dependencies/openzeppelin/contracts/IERC20Detailed.sol";
 import "../interfaces/IPriceFeed.sol";
 import "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
+import "../dependencies/openzeppelin/contracts/SafeMath.sol";
 
 interface IChainlinkAggregator {
 
