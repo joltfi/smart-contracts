@@ -6,7 +6,7 @@ module.exports = buildModule("DeployJoltOFT", (m) => {
     "JOLT Finance",
     "JOLT",
     OPTIMISM_MAINNET.LZ_ENDPOINT,
-    OPTIMISM_MAINNET.DEPLOYER,
+    m.getAccount(0),
   ]);
 
   return { joltOft };

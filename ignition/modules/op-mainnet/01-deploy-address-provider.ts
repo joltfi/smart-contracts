@@ -14,14 +14,13 @@ module.exports = buildModule(
 
     m.call(lendingPoolAddressesProvider, "setAddress", [
       keccak256(toUtf8Bytes("TEAM_WALLET")),
-      OPTIMISM_MAINNET.MULTISIG,
+      OPTIMISM_MAINNET.TEAM_WALLET,
     ]);
 
-    m.call(lendingPoolAddressesProvider, "setPoolAdmin", [
-      OPTIMISM_MAINNET.DEPLOYER,
-    ]);
+    m.call(lendingPoolAddressesProvider, "setPoolAdmin", [m.getAccount(0)]);
+
     m.call(lendingPoolAddressesProvider, "setEmergencyAdmin", [
-      OPTIMISM_MAINNET.DEPLOYER,
+      m.getAccount(0),
     ]);
 
     return { lendingPoolAddressesProvider };

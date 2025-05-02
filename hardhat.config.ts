@@ -61,7 +61,7 @@ const config: HardhatUserConfig = {
         // Be sure to replace it with an address from your own Ledger device
         "0x3300ed582aadab0d80e6b04fbc00e35f50c6336d",
       ],
-      chainId: 10,
+      chainId: 0xa,
     },
     hardhat: {
       mining: {
@@ -69,7 +69,7 @@ const config: HardhatUserConfig = {
         interval: 1000,
       },
       forking: {
-        url: process.env.ALCHEMY_OP_SEPOLIA!, // Replace with your mainnet RPC URL
+        url: process.env.ALCHEMY_OP_MAINNET!, // Replace with your mainnet RPC URL
         blockNumber: 12345678, // Optional: Use a specific block number
       },
       accounts: [

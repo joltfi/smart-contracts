@@ -39,7 +39,7 @@ module.exports = buildModule("DeployMultiFeeDistribution", (m) => {
   m.call(
     oftModule.joltOft as any,
     "mint",
-    [OPTIMISM_MAINNET.DEPLOYER, ethers.parseEther("1")],
+    [m.getAccount(0), ethers.parseEther("1")],
     { id: "mintForLP", after: [setMinter] }
   ); // initial mint
 

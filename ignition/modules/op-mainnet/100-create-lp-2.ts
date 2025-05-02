@@ -12,16 +12,7 @@ const DeployMultiFeeModule = require("./07-deploy-multi-fee-distribution");
 module.exports = buildModule("CreateUniswapLP", (m) => {
   const FEE_TIER = 3000; // Supported fee tiers: 500, 3000, 10000
   const REWARD_TOKEN_AMOUNT = ethers.parseEther("0.000001");
-  const WETH_TOKEN_AMOUNT = ethers.parseEther("0.0000001"); // ~$50
-
-  const multiFeeModule = m.useModule(DeployMultiFeeModule);
-
-  const price: bigint = REWARD_TOKEN_AMOUNT / WETH_TOKEN_AMOUNT;
-
-  const tick = priceToTick(price);
-
-  // Calculate sqrtPriceX96
-  const sqrtPriceX96 = TickMath.getSqrtRatioAtTick(tick);
+  const WETH_TOKEN_AMOUNT = ethers.parseEther("0.000001"); // ~$50
 
   const oftModule = m.useModule(DeployOftModule);
 
@@ -60,39 +51,9 @@ module.exports = buildModule("CreateUniswapLP", (m) => {
           },
         };
 
-  const createLP = m.call(
-    uniswapV3Factory,
-    "createPool",
-    [mintData.token0.token, mintData.token1.token, FEE_TIER],
-    { after: [multiFeeModule.multiFeeDistribution] }
-  );
-
-  const lpAddress = m.readEventArgument(createLP, "PoolCreated", "pool");
-
-  const uniswapV3Pool = m.contractAt("IUniswapV3Pool", lpAddress);
-
-  const callInitialize = m.call(uniswapV3Pool, "initialize", [
-    sqrtPriceX96.toString(),
-  ]);
-
   const positionManager = m.contractAt(
     "INonfungiblePositionManager",
     OPTIMISM_MAINNET.POSITION_MANAGER_ADDRESS
-  );
-
-  // approve tokens for mint
-  const approveWETH = m.call(
-    wETH,
-    "approve",
-    [OPTIMISM_MAINNET.POSITION_MANAGER_ADDRESS, WETH_TOKEN_AMOUNT],
-    { id: "approveWETHforLP", after: [multiFeeModule.multiFeeDistribution] }
-  );
-
-  const approveReward = m.call(
-    oftModule.joltOft as any,
-    "approve",
-    [OPTIMISM_MAINNET.POSITION_MANAGER_ADDRESS, REWARD_TOKEN_AMOUNT],
-    { id: "approveRewardforLP", after: [multiFeeModule.multiFeeDistribution] }
   );
 
   const deadline = 3485097076338; // Date.now() * 2
@@ -117,25 +78,10 @@ module.exports = buildModule("CreateUniswapLP", (m) => {
         deadline,
       },
     ],
-    { after: [createLP, callInitialize, approveWETH, approveReward] }
+    {
+      id: "mint2",
+    }
   );
 
-  return { uniswapV3Factory, uniswapV3Pool };
+  return { uniswapV3Factory };
 });
-
-// Convert price ratio to tick (simplified approach)
-function priceToTick(price: BigInt): number {
-  const sqrtPriceX96 = encodeSqrtRatioX96(price, BigInt(1));
-  const tick = TickMath.getTickAtSqrtRatio(sqrtPriceX96);
-  return tick;
-}
-
-export function encodeSqrtRatioX96(amount1: BigInt, amount0: BigInt): JSBI {
-  const numerator = JSBI.leftShift(
-    JSBI.BigInt(amount1.toString()),
-    JSBI.BigInt(192)
-  );
-  const denominator = JSBI.BigInt(amount0.toString());
-  const ratioX192 = JSBI.divide(numerator, denominator);
-  return sqrt(ratioX192);
-}

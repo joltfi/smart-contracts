@@ -8,8 +8,8 @@ const DeployLendingPoolModule = require("./02-deploy-lending-pool");
 
 module.exports = buildModule("TimelockController", (m) => {
   const minDelay = 86400 * 3; // 3 days
-  const proposers = [OPTIMISM_MAINNET.MULTISIG];
-  const executors = [OPTIMISM_MAINNET.MULTISIG];
+  const proposers = [OPTIMISM_MAINNET.TEAM_WALLET];
+  const executors = [OPTIMISM_MAINNET.TEAM_WALLET];
 
   const lendingPool = m.useModule(DeployLendingPoolModule);
   const addressProvider = m.useModule(AddressProviderModule);
@@ -31,7 +31,7 @@ module.exports = buildModule("TimelockController", (m) => {
   const whitelist2 = m.call(
     lpProxy,
     "whitelist",
-    [OPTIMISM_MAINNET.MULTISIG, true],
+    [OPTIMISM_MAINNET.TEAM_WALLET, true],
     {
       id: "whitelistMultisig",
     }
