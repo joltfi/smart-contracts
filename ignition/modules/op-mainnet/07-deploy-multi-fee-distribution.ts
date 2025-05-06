@@ -14,34 +14,43 @@ module.exports = buildModule("DeployMultiFeeDistribution", (m) => {
     {}
   );
 
+  const setMinter1 = m.call(
+    oftModule.joltOft as any,
+    "setMinter",
+    [m.getAccount(0)],
+    {
+      id: "setMinter1",
+    }
+  );
+  const mint1 = m.call(
+    oftModule.joltOft as any,
+    "mint",
+    [BURN_ADDRESS, ethers.parseEther("100000")],
+    { id: "initialBurn", after: [setMinter1] }
+  );
+  const mint2 = m.call(
+    oftModule.joltOft as any,
+    "mint",
+    [multiFeeDistribution, ethers.parseEther("1")],
+    { id: "mintToRewards", after: [setMinter1] }
+  ); // initial mint
+  const mint3 = m.call(
+    oftModule.joltOft as any,
+    "mint",
+    [m.getAccount(0), ethers.parseEther("1")],
+    { id: "mintForLP", after: [setMinter1] }
+  ); // initial mint
+
+  //
   const setMinter = m.call(
     oftModule.joltOft as any,
     "setMinter",
     [multiFeeDistribution],
     {
       id: "setMinter",
+      after: [mint1, mint2, mint3],
     }
   );
-
-  m.call(
-    oftModule.joltOft as any,
-    "mint",
-    [BURN_ADDRESS, ethers.parseEther("100000")],
-    { id: "initialBurn", after: [setMinter] }
-  );
-
-  m.call(
-    oftModule.joltOft as any,
-    "mint",
-    [multiFeeDistribution, ethers.parseEther("1")],
-    { id: "mintToRewards", after: [setMinter] }
-  ); // initial mint
-  m.call(
-    oftModule.joltOft as any,
-    "mint",
-    [m.getAccount(0), ethers.parseEther("1")],
-    { id: "mintForLP", after: [setMinter] }
-  ); // initial mint
 
   return { multiFeeDistribution };
 });
