@@ -56,11 +56,7 @@ const config: HardhatUserConfig = {
     },
     op_mainnet: {
       url: process.env.ALCHEMY_OP_MAINNET!,
-      ledgerAccounts: [
-        // This is an example address
-        // Be sure to replace it with an address from your own Ledger device
-        "0x3300ed582aadab0d80e6b04fbc00e35f50c6336d",
-      ],
+      accounts: [process.env.PRIVATE_KEY!],
       chainId: 0xa,
     },
     hardhat: {
