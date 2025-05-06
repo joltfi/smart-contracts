@@ -307,7 +307,7 @@ contract AaveLiquidationBot is AccessControl, ReentrancyGuard {
                 amountOutMinimum: amountOutMin
             });
 
-        // Perform the swap. This call handles both single-hop and multi-hop swaps.
+        // Perform the swap. This call handles both single-hop and multi-hop swaps
         amountOut = ISwapRouter(_uniswapRouter).exactInput(params);
     }
 

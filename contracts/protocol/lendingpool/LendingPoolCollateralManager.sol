@@ -82,7 +82,7 @@ contract LendingPoolCollateralManager is
     }
 
     /**
-     * @dev As thIS contract extends the VersionedInitializable contract to match the state
+     * @dev As this contract extends the VersionedInitializable contract to match the state
      * of the LendingPool contract, the getRevision() function is needed, but the value is not
      * important, as the initialize() function will never be called here
      */
@@ -170,7 +170,7 @@ contract LendingPoolCollateralManager is
             vars.userCollateralBalance
         );
 
-        // If debtAmountNeeded < actualDebtToLiquidate, there isn't enough
+        // If debtAmountNeeded < actualDebtToLiquidate, there isnt enough
         // collateral to cover the actual amount that is being liquidated, hence we liquidate
         // a smaller amount
 

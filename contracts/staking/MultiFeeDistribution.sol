@@ -85,7 +85,7 @@ contract MultiFeeDistribution is IMultiFeeDistribution, Ownable {
         rewardData[_stakingToken].lastUpdateTime = block.timestamp;
     }
 
-    /* ========== ADMIN CONFIGURATION ========== */
+    /* ========= ADMIN CONFIGURATION ========= */
 
     function setMinters(address[] memory _minters) external onlyOwner {
         require(!mintersAreSet);

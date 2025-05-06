@@ -5,7 +5,7 @@ import {OFT} from "@layerzerolabs/lz-evm-oapp-v2/contracts/oft/OFT.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 /// @title JoltOFT Token
-/// @notice OFT token with controlled minting and burning features.
+/// @notice OFT token with controlled minting and burning features
 contract JoltOFT is OFT {
     /// @notice Address authorized to mint tokens.
     address public minter;
@@ -41,10 +41,7 @@ contract JoltOFT is OFT {
     /// @param _to Recipient address.
     /// @param _value Amount of tokens to mint.
     function mint(address _to, uint256 _value) external {
-        require(
-            msg.sender == owner() ||
-                (minter != address(0) && msg.sender == minter)
-        );
+        require(minter != address(0) && msg.sender == minter);
         require(_to != address(0), "Cannot mint to zero address");
         require(_value > 0, "Mint value must be greater than 0");
         _mint(_to, _value);

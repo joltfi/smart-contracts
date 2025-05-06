@@ -21,7 +21,7 @@ pragma solidity 0.7.6;
  */
 library Errors {
     //common errors
-    string public constant CALLER_NOT_POOL_ADMIN = "33"; // 'The caller must be the pool admin'
+    string public constant CALLER_NOT_POOL_ADMIN = "33"; // 'The caller must be the pool admin'.
     string public constant BORROW_ALLOWANCE_NOT_ENOUGH = "59"; // User borrows on behalf, but allowance are too small
     string public constant NOT_WHITELISTED = "81"; // User borrows on behalf, but allowance are too small
 

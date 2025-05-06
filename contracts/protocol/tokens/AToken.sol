@@ -185,7 +185,7 @@ contract AToken is
     /**
      * @dev Mints aTokens to the reserve treasury
      * - Only callable by the LendingPool
-     * @param amount The amount of tokens getting minted
+     * @param amount The amount of tokens getting minted.
      * @param index The new liquidity index of the reserve
      */
     function mintToTreasury(

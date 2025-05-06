@@ -99,7 +99,7 @@ contract ChainlinkUniswapV3PriceFeed is Ownable, IPriceFeed {
         require(
             _chainlinkTimeout >= MIN_CHAINLINK_TIMEOUT &&
                 _chainlinkTimeout <= MAX_CHAINLINK_TIMEOUT,
-            "Invalid chainlinkTimeout"
+            "Invalid chainlink timeout"
         );
         chainlinkTimeout = _chainlinkTimeout;
     }

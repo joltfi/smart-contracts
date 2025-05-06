@@ -27,7 +27,7 @@ library ReserveLogic {
     using SafeERC20 for IERC20;
 
     /**
-     * @dev Emitted when the state of a reserve is updated
+     * @dev Emitted when the state of a reserve is updated.
      * @param asset The address of the underlying asset of the reserve
      * @param liquidityRate The new liquidity rate
      * @param stableBorrowRate The new stable borrow rate

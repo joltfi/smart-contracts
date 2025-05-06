@@ -44,7 +44,7 @@ library ReserveConfiguration {
     /**
      * @dev Sets the Loan to Value of the reserve
      * @param self The reserve configuration
-     * @param ltv the new ltv
+     * @param ltv the new ltv.
      **/
     function setLtv(
         DataTypes.ReserveConfigurationMap memory self,

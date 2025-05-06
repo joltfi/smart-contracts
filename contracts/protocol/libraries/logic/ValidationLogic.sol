@@ -19,7 +19,7 @@ import {DataTypes} from "../types/DataTypes.sol";
 /**
  * @title ReserveLogic library
  * @author Aave
- * @notice Implements functions to validate the different actions of the protocol
+ * @notice Implements functions to validate the different actions of the protocol.
  */
 library ValidationLogic {
     using ReserveLogic for DataTypes.ReserveData;

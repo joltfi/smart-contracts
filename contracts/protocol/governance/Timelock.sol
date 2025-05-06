@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/governance/TimelockController.sol";
 
 /**
  * @title Timelock
- * @dev Simple extension of OpenZeppelin's TimelockController, for deployment via Ignition.
+ * @dev Simple extension of OpenZeppelin's TimelockController, for deployment via Ignition
  */
 contract Timelock is TimelockController {
     /**

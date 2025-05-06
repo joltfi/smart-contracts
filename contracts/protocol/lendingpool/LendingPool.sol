@@ -71,7 +71,7 @@ contract LendingPool is
         _;
     }
 
-    // Internal function to check if an address is an EOA.
+    // Internal function to check if an address is an EOA
     // extcodesize returns 0 for EOAs and (usually) > 0 for deployed contracts.
     function _isEOA(address account) internal view returns (bool) {
         uint256 size;

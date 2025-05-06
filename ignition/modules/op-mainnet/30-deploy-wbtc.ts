@@ -16,7 +16,7 @@ module.exports = buildModule("DeployWBTCModule", (m) => {
   const SYMBOL = CONFIG.SYMBOL;
   const ADDRESS = CONFIG.ASSET_ADDRESS;
 
-  const INITIAL_DEPOSIT_AMOUNT = ethers.parseUnits("0.00002", DECIMALS); // $2.50
+  const INITIAL_DEPOSIT_AMOUNT = ethers.parseUnits("0.000004", DECIMALS); // $2.50
 
   const chef = m.useModule(ChefIncentivesControllerModule);
   const multiFee = m.useModule(MultiFeeDistributionModule);

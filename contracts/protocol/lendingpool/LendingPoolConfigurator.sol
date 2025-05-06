@@ -72,6 +72,7 @@ contract LendingPoolConfigurator is
         pool = ILendingPool(addressesProvider.getLendingPool());
     }
 
+    // used to initialize a new reserve
     function initReserve(
         InitReserveInput calldata input,
         uint256 initialDepositAmount

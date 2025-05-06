@@ -49,7 +49,7 @@ library UserConfiguration {
 
   /**
    * @dev Used to validate if a user has been using the reserve for borrowing or as collateral
-   * @param self The configuration object
+   * @param self The configuration object.
    * @param reserveIndex The index of the reserve in the bitmap
    * @return True if the user has been using a reserve for borrowing or as collateral, false otherwise
    **/

@@ -8,8 +8,6 @@ import "../dependencies/openzeppelin/contracts/SafeERC20.sol";
 import "../dependencies/openzeppelin/contracts/SafeMath.sol";
 import "../dependencies/openzeppelin/contracts/Ownable.sol";
 
-// based on the Sushi MasterChef
-// https://github.com/sushiswap/sushiswap/blob/master/contracts/MasterChef.sol
 interface IJoltOFT {
     function circulatingSupply() external view returns (uint256);
 
