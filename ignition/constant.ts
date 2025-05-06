@@ -1,5 +1,5 @@
 export const OPTIMISM_MAINNET = {
-  MARKET_ID: "Jolt",
+  MARKET_ID: "JOLT",
 
   TEAM_WALLET: "0xb577dad1e6118790a5437aac8ecf03c443363c46", // multisig
 
