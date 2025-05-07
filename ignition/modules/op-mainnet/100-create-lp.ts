@@ -11,8 +11,8 @@ const DeployMultiFeeModule = require("./07-deploy-multi-fee-distribution");
 
 module.exports = buildModule("CreateUniswapLP", (m) => {
   const FEE_TIER = 3000; // Supported fee tiers: 500, 3000, 10000
-  const REWARD_TOKEN_AMOUNT = ethers.parseEther("0.000001");
-  const WETH_TOKEN_AMOUNT = ethers.parseEther("0.0000001"); // ~$50
+  const REWARD_TOKEN_AMOUNT = ethers.parseEther("1");
+  const WETH_TOKEN_AMOUNT = ethers.parseEther("0.002"); // ~$50
 
   const multiFeeModule = m.useModule(DeployMultiFeeModule);
 
