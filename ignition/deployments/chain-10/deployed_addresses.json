@@ -45,5 +45,6 @@
   "CreateUniswapLP#JoltOFT": "0xd549aa17c5010A33ca5E3D2051b8904B5a279b0A",
   "CreateUniswapLP#IUniswapV3Pool": "0xd2BF5c6d948C83B7C6Bc357239E8C42E056ed295",
   "TimelockController#LendingPool": "0x2ABC4DE4ceB60BF15Fa57122CbB07fA5a50D3C50",
-  "TimelockController#Timelock": "0x272Cf01607783CC9DB7506244dc6ac2f113702FC"
+  "TimelockController#Timelock": "0x272Cf01607783CC9DB7506244dc6ac2f113702FC",
+  "DeployOracleV2ForUSDC#ChainlinkUniswapV3PriceFeedV2": "0xF849f96B72De00ca5EF8Fdff76D83cfB4e53b0D8"
 }

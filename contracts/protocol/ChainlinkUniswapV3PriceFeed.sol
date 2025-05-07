@@ -41,7 +41,9 @@ contract ChainlinkUniswapV3PriceFeed is Ownable, IPriceFeed {
     uint32 public twapWindow;
 
     uint32 public chainlinkTimeout = 1800; // 30 minutes
+    
     uint32 private constant MIN_TWAP_WINDOW = 1800; // 30 minutes
+
     uint32 private constant MIN_CHAINLINK_TIMEOUT = 900; // 15 minutes
     uint32 private constant MAX_CHAINLINK_TIMEOUT = 86400; // 24 hours
 
