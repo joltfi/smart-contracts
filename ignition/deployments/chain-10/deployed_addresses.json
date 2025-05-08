@@ -46,5 +46,12 @@
   "CreateUniswapLP#IUniswapV3Pool": "0xd2BF5c6d948C83B7C6Bc357239E8C42E056ed295",
   "TimelockController#LendingPool": "0x2ABC4DE4ceB60BF15Fa57122CbB07fA5a50D3C50",
   "TimelockController#Timelock": "0x272Cf01607783CC9DB7506244dc6ac2f113702FC",
-  "DeployOracleV2ForUSDC#ChainlinkUniswapV3PriceFeedV2": "0xF849f96B72De00ca5EF8Fdff76D83cfB4e53b0D8"
+  "DeployOracleV2ForUSDC#ChainlinkUniswapV3PriceFeedV2": "0xF849f96B72De00ca5EF8Fdff76D83cfB4e53b0D8",
+  "TimelockController2#aaveOracle": "0x4526B19247305a57605af2A9381d1f842d3D25f1",
+  "TimelockController2#chef": "0x0774275E354561C2eDcAac816f2CE7971aCA1d9a",
+  "TimelockController2#gateway": "0x6915F20F7793d2bba1BAb289994188e9C7167BB0",
+  "TimelockController2#lendingRateOracle": "0xd57DfC8202BF2945CE742aeaEaA88921aEa1EBff",
+  "TimelockController2#usdc": "0xF849f96B72De00ca5EF8Fdff76D83cfB4e53b0D8",
+  "TimelockController2#wbtc": "0x47d4B5848cB723BcF3d9799432a7B31eE9992d59",
+  "TimelockController2#weth": "0x8209d4eCFf1253feCAd1B0A030B7d16Ba348a1E2"
 }
