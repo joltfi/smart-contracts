@@ -17,7 +17,7 @@ interface IJoltOFT {
 contract ChefIncentivesController is Ownable {
     using SafeMath for uint256;
 
-    uint16 public apr; // APR in basis points (e.g., 500 = 5.00%)
+    uint256 public apr; // APR in basis points (e.g., 500 = 5.00%)
     uint256 public rewardsPerSecond;
     IJoltOFT public oftToken;
 
@@ -25,7 +25,7 @@ contract ChefIncentivesController is Ownable {
     uint16 private constant BASIS_POINTS_DIVISOR = 10_000; // For APR in basis points
 
     event RewardsPerSecondUpdated(uint256 newRewardsPerSecond);
-    event APRUpdated(uint16 newAPR);
+    event APRUpdated(uint256 newAPR);
 
     // Info of each user.
     struct UserInfo {
@@ -80,11 +80,10 @@ contract ChefIncentivesController is Ownable {
         address _poolConfigurator,
         IMultiFeeDistribution _rewardMinter,
         address _oftToken,
-        uint16 _initialAPR
+        uint256 _initialAPR
     ) Ownable() {
         require(_oftToken != address(0), "Invalid OFT token address");
-        require(_initialAPR <= BASIS_POINTS_DIVISOR, "APR exceeds 100%");
-
+ 
         oftToken = IJoltOFT(_oftToken);
 
         apr = _initialAPR;
@@ -106,8 +105,7 @@ contract ChefIncentivesController is Ownable {
      * @dev Updates the APR. Can only be called by the owner.
      * @param _newAPR New APR in basis points.
      */
-    function setAPR(uint16 _newAPR) external onlyOwner {
-        require(_newAPR <= BASIS_POINTS_DIVISOR, "APR exceeds 100%");
+    function setAPR(uint256 _newAPR) external onlyOwner {
         apr = _newAPR;
         emit APRUpdated(apr);
         _massUpdatePools(); // Finalize rewards using the old APR
@@ -119,9 +117,11 @@ contract ChefIncentivesController is Ownable {
      */
     function _updateRewardsPerSecond() internal {
         uint256 totalSupply = oftToken.totalSupply();
+
         if (block.timestamp > startTime.add(SECONDS_IN_A_YEAR)) {
             totalSupply = oftToken.circulatingSupply();
         }
+
         rewardsPerSecond = totalSupply.mul(apr).div(BASIS_POINTS_DIVISOR).div(
             SECONDS_IN_A_YEAR
         );

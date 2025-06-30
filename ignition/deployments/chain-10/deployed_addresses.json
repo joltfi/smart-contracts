@@ -53,5 +53,8 @@
   "TimelockController2#lendingRateOracle": "0xd57DfC8202BF2945CE742aeaEaA88921aEa1EBff",
   "TimelockController2#usdc": "0xF849f96B72De00ca5EF8Fdff76D83cfB4e53b0D8",
   "TimelockController2#wbtc": "0x47d4B5848cB723BcF3d9799432a7B31eE9992d59",
-  "TimelockController2#weth": "0x8209d4eCFf1253feCAd1B0A030B7d16Ba348a1E2"
+  "TimelockController2#weth": "0x8209d4eCFf1253feCAd1B0A030B7d16Ba348a1E2",
+  "TimelockController2#lendingPoolAddressesProvider": "0x3D8a1EA95EA4afA2469bFB80D94A4F9068670e82",
+  "DeployDataProviderModule#AaveProtocolDataProvider": "0xe9c0EFeA9236467fa9aaC41E2c728aD47aaD74d3",
+  "DeployFixedChefIncentivesController#ChefIncentivesController": "0x02FBdb387A105fBdaF3b25A225D236384bAd46EE"
 }
